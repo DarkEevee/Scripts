@@ -1906,6 +1906,13 @@ namespace Script
                         }
                         break;
                     case "/g": {
+                            string guildRank;
+                            if (client.Player.GuildAccess == Enums.GuildRank.Founder)
+                                guildRank = "[LDR]";
+                            else if (client.Player.GuildAccess == Enums.GuildRank.Admin)
+                                guildRank = "[ADM]";
+                            else
+                                guildRank = "[MBR]";
                             if (!string.IsNullOrEmpty(client.Player.GuildName) && !string.IsNullOrEmpty(joinedArgs) && client.Player.Muted == false) {
                                 OnChatMessageRecieved(client, joinedArgs, Enums.ChatMessageType.Guild);
                                 Server.Logging.ChatLogger.AppendToChatLog("Guild Chat/" + client.Player.GuildName, client.Player.Name + ": " + joinedArgs);
@@ -1929,7 +1936,7 @@ namespace Script
                                 */
                                 foreach (Client i in ClientManager.GetClients()) {
                                     if (i.IsPlaying() && (Ranks.IsAllowed(i, Enums.Rank.Moniter) || i.Player.GuildName == client.Player.GuildName)) {
-                                        Messenger.PlayerMsg(i, client.Player.Name + " [" + client.Player.GuildName + "]: " + joinedArgs, System.Drawing.Color.MediumSpringGreen);
+                                        Messenger.PlayerMsg(i, guildRank + " " + client.Player.Name + " [" + client.Player.GuildName + "]: " + joinedArgs, System.Drawing.Color.MediumSpringGreen);
 
                                     }
                                 }
